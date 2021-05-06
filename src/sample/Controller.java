@@ -5,30 +5,38 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.Callback;
-import model.IndlagtePerAldersGruppe;
-import model.Nøgletal;
+import model.*;
 import model.Region;
-import model.RegionHandler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EventListener;
 
 public class Controller {
 //files
-String indlagtePerAldersGruppeFilename = "C:\\Users\\suhai\\Desktop\\Object oriented programming\\Regionalt_DB\\04_indlagte_pr_alders_grp_pr_region.csv";
-String indlagtePerDagFilename = "C:\\Users\\suhai\\Desktop\\Object oriented programming\\Regionalt_DB\\15_indlagte_pr_region_pr_dag.csv";
-String noegletalfilename = "C:\\Users\\suhai\\Desktop\\Object oriented programming\\Regionalt_DB\\01_noegle_tal.csv";
+String indlagtePerAldersGruppeFilename = "src\\data\\04_indlagte_pr_alders_grp_pr_region.csv";
+String indlagtePerDagFilename = "src\\data\\15_indlagte_pr_region_pr_dag.csv";
+String noegletalfilename = "src\\data\\01_noegle_tal.csv";
+String kommuneFil = "src/data/kommunekoder.csv";
+
 @FXML
 private BorderPane borderPane;
+
 @FXML
 private BorderPane innerborderpane;
 @FXML
@@ -46,11 +54,20 @@ private Button b1;
 @FXML
 private Button b2;
 
+@FXML
+private AnchorPane rightanchorpane;
+
+@FXML
+private BarChart barChart;
+
+
 
 private RegionHandler regionHandler = new RegionHandler();
 
 
 private ObservableList<Region> regionObservableList;
+private ObservableList<Kommune> kommuneObservableList;
+
 
 Region hovedstaden;
 Region midtjylland;
@@ -91,6 +108,12 @@ public Controller(){
 
 
     regionObservableList = FXCollections.observableArrayList(hovedstaden, midtjylland, nordjylland, sjælland, syddanmark );
+
+    kommuneObservableList = FXCollections.observableArrayList();
+    fillKommuneObservablelistfromfile(kommuneObservableList, kommuneFil);
+
+
+
 }
 
 
@@ -98,11 +121,16 @@ public void initialize(){
     int[] values = new int[] {1, 2, 3};
     String[] keys = new String[] {"one", "two", "three"};
 
-    setGridPaneData(values, keys);
+
+
+    int[] NøgletalforHeleLandet = regionHandler.summarizeNøgletal(regionObservableList);
+    setGridPaneData(NøgletalforHeleLandet, Nøgletal.headers);
 
     setListView();
     listView.getSelectionModel().select(0);//select first item
     //showdata(hovedstaden);//show initial data, not needed if initial is already selected
+    //setupBarChart();
+
 
 
 
@@ -117,7 +145,13 @@ public void setGridPaneData(int[] values, String[] Keys){
         columnConstraints.setPercentWidth(100/values.length);
         columnConstraints.setHalignment(HPos.CENTER);
         gridpane.getColumnConstraints().add(columnConstraints);
-        gridpane.add(new Label(Keys[i]), i, 0);
+
+        Label labelHeader = new Label(Keys[i]);
+        //labelHeader.setStyle("-fx-font-size: 18");
+        labelHeader.setFont(Font.font("Arial",FontWeight.BOLD, 15));
+
+
+        gridpane.add(labelHeader, i, 0);
         gridpane.add(new Label(Integer.toString(values[i])), i, 1);
     }
 
@@ -131,8 +165,15 @@ public void setDataset1(Region region){
     if (aldersGruppeliste.size() != 0) {
         //setting up a new gridpane
         GridPane gridPane = new GridPane();
-        innerborderpane.setCenter(gridPane);
+        rightanchorpane.getChildren().add(gridPane);
         gridPane.setGridLinesVisible(true);
+
+        //setting up achorpane
+        AnchorPane.setBottomAnchor(gridPane, 1.0);
+        AnchorPane.setLeftAnchor(gridPane, 1.0);
+        AnchorPane.setRightAnchor(gridPane, 1.0);
+        AnchorPane.setTopAnchor(gridPane, 1.0);
+
 
         //row constraint setup
         RowConstraints rowConstraints = new RowConstraints();
@@ -192,13 +233,20 @@ public void setDataset1(Region region){
 
         }
 
+
     }else{
         GridPane gridPane = new GridPane();
-        innerborderpane.setCenter(gridPane);
+        rightanchorpane.getChildren().add(gridPane);
         //row constrainst setup
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setPercentHeight(100);
         rowConstraints.setValignment(VPos.CENTER);
+
+        //setting up achorpane
+        AnchorPane.setBottomAnchor(gridPane, 1.0);
+        AnchorPane.setLeftAnchor(gridPane, 1.0);
+        AnchorPane.setRightAnchor(gridPane, 1.0);
+        AnchorPane.setTopAnchor(gridPane, 1.0);
 
         //column constraint setup
         ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -225,8 +273,14 @@ public void setDataset2(Region region) {
 
         //setting up a new gridpane
         GridPane gridPane = new GridPane();
-        innerborderpane.setCenter(gridPane);
+        rightanchorpane.getChildren().add(gridPane);
         gridPane.setGridLinesVisible(true);
+
+        //setting up achorpane
+        AnchorPane.setBottomAnchor(gridPane, 1.0);
+        AnchorPane.setLeftAnchor(gridPane, 1.0);
+        AnchorPane.setRightAnchor(gridPane, 1.0);
+        AnchorPane.setTopAnchor(gridPane, 1.0);
 
         //row constraint setup
         RowConstraints rowConstraints = new RowConstraints();
@@ -242,7 +296,7 @@ public void setDataset2(Region region) {
             gridPane.getColumnConstraints().add(columnConstraints);
         }
         //make rows
-        for(int i = 0; i < 6; i++){
+        for(int i = 0; i < nøgletalheaders.length-1; i++){
             gridPane.getRowConstraints().add(rowConstraints);
 
             AnchorPane anchorPane1 = new AnchorPane();
@@ -275,17 +329,52 @@ public void setDataset2(Region region) {
 
 
         }
+        //last row
+        gridPane.getRowConstraints().add(rowConstraints);
+        AnchorPane anchorPane1 = new AnchorPane();
+        AnchorPane anchorPane2 = new AnchorPane();
+        Label label1 = new Label(nøgletalheaders[5]);
+        Label label2 = new Label(Integer.toString(nøgletarray[10]));
+
+        label1.setAlignment(Pos.CENTER);
+        label1.setStyle("-fx-background-color: white;");
+        label2.setAlignment(Pos.CENTER);
+        label2.setStyle("-fx-background-color: white;");
+
+
+        anchorPane1.getChildren().add(label1);
+        anchorPane2.getChildren().add(label2);
+
+        AnchorPane.setBottomAnchor(label1, 1.0);
+        AnchorPane.setLeftAnchor(label1, 1.0);
+        AnchorPane.setRightAnchor(label1, 1.0);
+        AnchorPane.setTopAnchor(label1, 1.0);
+
+        AnchorPane.setBottomAnchor(label2, 1.0);
+        AnchorPane.setLeftAnchor(label2, 1.0);
+        AnchorPane.setRightAnchor(label2, 1.0);
+        AnchorPane.setTopAnchor(label2, 1.0);
+
+
+        gridPane.add(anchorPane1, 0, 5);
+        gridPane.add(anchorPane2, 1, 5);
 
 
 
 
     } else {
         GridPane gridPane = new GridPane();
-        innerborderpane.setCenter(gridPane);
+        rightanchorpane.getChildren().add(gridPane);
         //row constrainst setup
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setPercentHeight(100);
         rowConstraints.setValignment(VPos.CENTER);
+
+        //setting up achorpane
+        AnchorPane.setBottomAnchor(gridPane, 1.0);
+        AnchorPane.setLeftAnchor(gridPane, 1.0);
+        AnchorPane.setRightAnchor(gridPane, 1.0);
+        AnchorPane.setTopAnchor(gridPane, 1.0);
 
         //column constraint setup
         ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -329,12 +418,14 @@ public void setListView(){
         public void changed(ObservableValue<? extends Region> observableValue, Region oldregion, Region newRegion) {
             if (newRegion != null) {
                 showdata(newRegion);
+                setupBarChartIndlagte(newRegion);
             }
         }
     });
 }
 
 public void showdata(Region region){
+    rightanchorpane.getChildren().clear();
     if (show == 1){
         setDataset1(region);
     }
@@ -342,22 +433,94 @@ public void showdata(Region region){
         setDataset2(region);
     }
 
+
 }
 
-    public void b1Handle(ActionEvent actionEvent) {
-        show = 1;
-        if(listView.getSelectionModel().getSelectedItem() != null){
-            showdata(listView.getSelectionModel().getSelectedItem());
-        }
+public void setupBarChartIndlagte(Region region){
+    CategoryAxis xaxis = new CategoryAxis();
+    NumberAxis yaxis = new NumberAxis();
+    xaxis.setLabel("Aldersgrupper");
+    yaxis.setLabel("Indlæggelser");
+    ArrayList<IndlagtePerAldersGruppe> indlagtePerALdersgruppeArray = region.getIndlagtePerAldersGruppe();
+
+    barChart = new BarChart<>(xaxis, yaxis);
+
+    innerborderpane.setCenter(barChart);
+
+
+
+
+    XYChart.Series dataseries = new XYChart.Series();
+    dataseries.setName(region.getName());
+
+    for (int i = 0; i < indlagtePerALdersgruppeArray.size(); i++) {
+        XYChart.Data dataforGraph = new XYChart.Data(indlagtePerALdersgruppeArray.get(i).getAldersGruppe(), indlagtePerALdersgruppeArray.get(i).getIndlagte());
+        dataseries.getData().add(dataforGraph);
+    }
+    barChart.getData().add(dataseries);
+
+}
+
+
+public void setupBarChartTilfælde(Kommune kommune){
+    CategoryAxis xaxis = new CategoryAxis();
+    NumberAxis yaxis = new NumberAxis();
+    xaxis.setLabel("Aldersgrupper");
+    yaxis.setLabel("Indlæggelser");
+    ArrayList<TilfældeperAldersgruppe> tilfældeperAldersgruppeArrayList = kommune.getTilfældeperAldersgruppe();
+
+    barChart = new BarChart<>(xaxis, yaxis);
+
+    innerborderpane.setCenter(barChart);
+
+    XYChart.Series dataseries = new XYChart.Series();
+    dataseries.setName(kommune.getName());
+
+
+
+    for (int i = 0; i < tilfældeperAldersgruppeArrayList.size(); i++) {
+        XYChart.Data dataforGraph = new XYChart.Data(tilfældeperAldersgruppeArrayList.get(i).getAldersGruppe(), tilfældeperAldersgruppeArrayList.get(i).getTilfælde());
+        dataseries.getData().add(dataforGraph);
+    }
+    barChart.getData().add(dataseries);
+}
+
+public void b1Handle(ActionEvent actionEvent) {
+    show = 1;
+    if(listView.getSelectionModel().getSelectedItem() != null){
+        showdata(listView.getSelectionModel().getSelectedItem());
 
     }
 
-    public void b2Handle(ActionEvent actionEvent) {
-        show = 2;
-        if(listView.getSelectionModel().getSelectedItem() != null){
-            showdata(listView.getSelectionModel().getSelectedItem());
+}
+
+public void b2Handle(ActionEvent actionEvent) {
+    show = 2;
+    if(listView.getSelectionModel().getSelectedItem() != null){
+        showdata(listView.getSelectionModel().getSelectedItem());
+    }
+
+}
+
+public void fillKommuneObservablelistfromfile(ObservableList<Kommune> observableList, String kommuneFil ){
+    String line;
+    String[] tokens;
+
+    try(BufferedReader bufferedReader = new BufferedReader( new FileReader(kommuneFil))) {
+
+        while((line = bufferedReader.readLine()) != null){
+            tokens = line.split(":");
+            observableList.add(new Kommune(tokens[0]));
+
         }
 
+
+    }catch (IOException exception){
+        exception.printStackTrace();
     }
+
+}
+
+
 
 }

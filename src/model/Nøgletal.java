@@ -19,7 +19,7 @@ public class Nøgletal {
     private int ændringer_antalletAfprøver;
 
     private int[] nøgletalsarray;
-    private String[] headers = {"Bekræftede tilfælde", "Døde", "Overstået", "Indlæggelser", "Testede Personer", "AntalletAfprøver"};
+    public static String[] headers = {"Bekræftede tilfælde", "Døde", "Overstået", "Indlæggelser", "Testede Personer", "Antallet af prøver"};
 
     public Nøgletal(int[] nøgletalsarray) {
 
@@ -34,6 +34,7 @@ public class Nøgletal {
         this.ændringer_Overstået = nøgletalsarray[7];
         this.ændringer_indlæggelser = nøgletalsarray[8];
         this.ændringer_testedePersoner = nøgletalsarray[9];
+
 
         this.antalletAfprøver = nøgletalsarray[10];
         this.ændringer_antalletAfprøver = nøgletalsarray[11];

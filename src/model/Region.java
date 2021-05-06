@@ -12,6 +12,8 @@ public class Region {
         this.navn = navn;
     }
 
+
+
     public void printIndlagtePerAldersGruppe(){
         System.out.println("##### "+navn+"  IndlagtePerAldersGruppe"+" #####");
         for (int i = 0; i < indlagtePerAldersGruppe.size(); i++){
@@ -58,6 +60,14 @@ public class Region {
 
     public void setNøgletal(Nøgletal nøgletal) {
         this.nøgletal = nøgletal;
+    }
+
+    public void setIndlagtePerAldersGruppe(ArrayList<IndlagtePerAldersGruppe> indlagtePerAldersGruppe) {
+        this.indlagtePerAldersGruppe = indlagtePerAldersGruppe;
+    }
+
+    public void setIndlagtPerDag(ArrayList<IndlagtPerDag> indlagtPerDag) {
+        this.indlagtPerDag = indlagtPerDag;
     }
 
     public ArrayList<IndlagtePerAldersGruppe> getIndlagtePerAldersGruppe() {

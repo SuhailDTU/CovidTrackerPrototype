@@ -1,10 +1,13 @@
 package model;
 
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import model.Region;
 
 public class RegionHandler {
 
@@ -16,20 +19,23 @@ public class RegionHandler {
         String line;
         String[] tokens;
         String regionname = region.navn.replaceAll("æ", ".");//replace æ with wildcard
+        ArrayList<IndlagtePerAldersGruppe> indlagtePerAldersGruppe = new ArrayList<IndlagtePerAldersGruppe>();
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(filename))) {
 
             while ((line = bufferedReader.readLine()) != null){
                 tokens = line.split(";");
                 if(tokens[0].matches(regionname) ){
-                    region.indlagtePerAldersGruppe.add(new IndlagtePerAldersGruppe(tokens[1], Integer.parseInt(tokens[2])));
+                    indlagtePerAldersGruppe.add(new IndlagtePerAldersGruppe(tokens[1], Integer.parseInt(tokens[2])));
                 }
 
             }
+            region.setIndlagtePerAldersGruppe(indlagtePerAldersGruppe);
 
         }catch ( IOException exception){
             exception.printStackTrace();
         }
+
 
 
     }
@@ -45,10 +51,11 @@ public class RegionHandler {
             while ((line = bufferedReader.readLine()) != null){
                 tokens = line.split(";");
                 if(tokens[1].matches(regionname) ){
-                    region.indlagtPerDag.add(new IndlagtPerDag(tokens[0], Integer.parseInt(tokens[2])));
+                   indlagtPerDag.add(new IndlagtPerDag(tokens[0], Integer.parseInt(tokens[2])));
                 }
 
             }
+            region.setIndlagtPerDag(indlagtPerDag);
 
         }catch ( IOException exception){
             exception.printStackTrace();
@@ -93,6 +100,22 @@ public class RegionHandler {
             exception.printStackTrace();
         }
 
+
+    }
+    public int[] summarizeNøgletal(ObservableList<Region> regionlist){
+        int[] NøgletalIHeleLandet = new int[Nøgletal.headers.length];
+        int sum;
+        int[] NøgletalsArrayForRegionen;
+
+        for(int i= 0; i < regionlist.size(); i++ ){
+            NøgletalsArrayForRegionen = regionlist.get(i).nøgletal.getNøgletalsarray();
+            for (int j= 0; j< Nøgletal.headers.length-1; j++){
+               NøgletalIHeleLandet[j] = NøgletalIHeleLandet[j]+NøgletalsArrayForRegionen[j];
+            }
+            NøgletalIHeleLandet[NøgletalIHeleLandet.length-1] = NøgletalIHeleLandet[NøgletalIHeleLandet.length-1] + NøgletalsArrayForRegionen[10];
+            
+        }
+        return NøgletalIHeleLandet;
 
     }
 }

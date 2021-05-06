@@ -12,41 +12,48 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="513.0" prefWidth="883.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <right>
-      <SplitPane dividerPositions="0.24666666666666667" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.23486682808716708" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="88.0" prefWidth="158.0">
                <children>
-                  <VBox alignment="CENTER" layoutX="4.0" layoutY="4.0" prefHeight="142.0" prefWidth="150.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <Button fx:id="b1" lineSpacing="5.0" mnemonicParsing="false" onAction="#b2Handle" text="Nøgletal" />
-                        <Button fx:id="b2" mnemonicParsing="false" onAction="#b1Handle" text="Aldersgrupper" />
-                     </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </VBox>
+                  <BorderPane prefHeight="94.0" prefWidth="248.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="0.0">
+                     <center>
+                        <VBox alignment="CENTER" prefHeight="142.0" prefWidth="150.0" spacing="10.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button fx:id="b1" lineSpacing="5.0" mnemonicParsing="false" onAction="#b2Handle" text="Nøgletal" />
+                              <Button fx:id="b2" mnemonicParsing="false" onAction="#b1Handle" text="Aldersgrupper" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </VBox>
+                     </center>
+                     <top>
+                        <AnchorPane BorderPane.alignment="CENTER">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-1.0" prefHeight="26.0" prefWidth="254.0" style="-fx-background-color: #474747;" text="Data" textFill="WHITE" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="-1.0">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                     </top>
+                  </BorderPane>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" />
+          <AnchorPane fx:id="rightanchorpane" minHeight="0.0" minWidth="250.0" prefHeight="308.0" prefWidth="251.0" />
         </items>
       </SplitPane>
    </right>
    <top>
       <BorderPane prefHeight="98.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <center>
-            <GridPane fx:id="gridpane" gridLinesVisible="true" maxHeight="-Infinity" prefHeight="78.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-         </center>
          <top>
             <AnchorPane prefHeight="33.0" prefWidth="480.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" layoutX="-1.0" layoutY="-4.0" prefHeight="37.0" prefWidth="599.0" style="-fx-background-color: black;" text="Nøgletal til i hele landet" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" layoutX="-1.0" layoutY="-4.0" prefHeight="37.0" prefWidth="599.0" style="-fx-background-color: #474747;" text="Nøgletal til i hele landet (siden den 27. januar 2020)" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="19.0" />
                      </font>
@@ -54,6 +61,18 @@
                </children>
             </AnchorPane>
          </top>
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane fx:id="gridpane" alignment="CENTER" layoutY="6.0" maxHeight="-Infinity" prefHeight="78.0" prefWidth="600.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="6.0">
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </center>
       </BorderPane>
    </top>
    <left>
@@ -64,7 +83,7 @@
          <top>
             <AnchorPane prefHeight="26.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" layoutX="-1.0" layoutY="-2.0" prefHeight="32.0" prefWidth="202.0" style="-fx-background-color: black;" text="Regioner" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label fx:id="listviewlabel" alignment="CENTER" layoutX="-1.0" layoutY="-2.0" prefHeight="32.0" prefWidth="202.0" style="-fx-background-color: #474747;" text="Regions" textFill="WHITE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>
@@ -75,11 +94,11 @@
       </BorderPane>
    </left>
    <center>
-      <BorderPane fx:id="innerborderpane" prefHeight="302.0" prefWidth="190.0" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="innerborderpane" prefHeight="415.0" prefWidth="424.0" BorderPane.alignment="CENTER">
          <top>
             <AnchorPane prefHeight="32.0" prefWidth="240.0" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="-2.0" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: black;" text="Data" textFill="WHITE" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="-2.0" prefHeight="26.0" prefWidth="240.0" style="-fx-background-color: #474747;" text="Graph" textFill="WHITE" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>
                         <Font name="System Bold" size="15.0" />
                      </font>

@@ -13,8 +13,13 @@ public class Main extends Application {
         //The FXML loader loads in the graphical elements such as panes and buttons via FXML. Those then have a corrensponding controller and
         // an instance of that is then created. The controller handles modyfying the view(FXML) and contain an instance of model(data).
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root2 = FXMLLoader.load(getClass().getResource("sample.fxml"));
         primaryStage.setTitle("TestFX");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Scene scene = new Scene(root, 920, 600);
+        Scene scene2 = new Scene(root2, 920, 600);
+        scene.getStylesheets().add("sample/stylesheet.css");
+
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

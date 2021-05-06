@@ -44,7 +44,22 @@ public class CovidChecker {
         //hovedstaden.printIndlagtePerAldersGruppe();
         //sjælland.printIndlagtePerAldersGruppe();
         //nordjylland.printIndlagtePerAldersGruppe();
-        sjælland.printNøgleTal();
+        //sjælland.printNøgleTal();
+
+        String tilfældeperaldersgruppefile = "src/data/09_tilfaelde_aldersgrp_kommuner.csv";
+
+
+        Kommune københavn = new Kommune("København");
+        System.out.println(københavn.Kommunekode);
+
+        Kommune Hjørring = new Kommune( "Hjørring");
+        System.out.println(Hjørring.Kommunekode);
+
+        KommuneHandler kommuneHandler = new KommuneHandler();
+
+        kommuneHandler.readinInTilfældePeraldersgruppe(Hjørring, tilfældeperaldersgruppefile);
+        Hjørring.printTilfældePerAldersGruppe();
+
 
     }
 }
